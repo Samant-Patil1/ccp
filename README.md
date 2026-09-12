@@ -29,6 +29,10 @@ Realtime Database for permanent message storage.
 
 ## One-time setup (≈5 minutes)
 
+> 📖 A beginner-friendly, click-by-click version of these steps — with exact
+> button names and a troubleshooting table — lives in
+> **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)**.
+
 ### 1. Create the Firebase project
 
 1. Go to <https://console.firebase.google.com> and sign in with a Google account.
