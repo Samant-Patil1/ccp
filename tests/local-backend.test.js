@@ -87,6 +87,7 @@ test('unsubscribe stops notifications', async () => {
   await a.init();
   let n = 0;
   const off = a.subscribeMessages(() => n++);
+  n = 0; // ignore the immediate snapshot call
   off();
   await a.sendMessage({ from: 'Ishu', type: 'text', text: 'x', replyTo: null });
   assert.equal(n, 0);
