@@ -78,6 +78,8 @@ export function initChat({ els, backend, me, peer, onRequestReply }) {
 
     if (msg.replyTo) bubble.appendChild(buildReplyQuote(msg));
 
+    const meta = el('span', 'msg-meta', formatTime(msg.ts || Date.now()));
+
     if (msg.type === 'image' && msg.dataUrl) {
       const img = el('img', 'msg-img');
       img.src = msg.dataUrl;
@@ -87,7 +89,10 @@ export function initChat({ els, backend, me, peer, onRequestReply }) {
         els.lightbox.classList.remove('hidden');
       });
       bubble.appendChild(img);
-      if (msg.text) bubble.appendChild(el('div', 'msg-text', msg.text));
+      const row = el('div', 'msg-row');
+      if (msg.text) row.appendChild(el('span', 'msg-text', msg.text));
+      row.appendChild(meta);
+      bubble.appendChild(row);
     } else if (msg.type === 'file' && msg.dataUrl) {
       const a = el('a', 'msg-file');
       a.href = msg.dataUrl;
@@ -99,13 +104,16 @@ export function initChat({ els, backend, me, peer, onRequestReply }) {
       a.appendChild(info);
       a.appendChild(el('span', 'msg-file-download', '⬇'));
       bubble.appendChild(a);
-      if (msg.text) bubble.appendChild(el('div', 'msg-text', msg.text));
+      const row = el('div', 'msg-row');
+      if (msg.text) row.appendChild(el('span', 'msg-text', msg.text));
+      row.appendChild(meta);
+      bubble.appendChild(row);
     } else {
-      bubble.appendChild(el('div', 'msg-text', msg.text || ''));
+      const row = el('div', 'msg-row');
+      row.appendChild(el('span', 'msg-text', msg.text || ''));
+      row.appendChild(meta);
+      bubble.appendChild(row);
     }
-
-    const meta = el('span', 'msg-meta', formatTime(msg.ts || Date.now()));
-    bubble.appendChild(meta);
 
     // Swipe right to reply (mobile).
     let touchX = 0, touchY = 0;

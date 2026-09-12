@@ -161,14 +161,16 @@ input, textarea { font: inherit; }
   user-select: text;
 }
 .msg.out .msg-bubble { background: var(--teal-bubble); }
-.msg-text { font-size: 14.5px; line-height: 1.35; white-space: pre-wrap; }
+.msg-row { display: flex; align-items: flex-end; gap: 8px; margin-top: 2px; }
+.msg-text { font-size: 14.5px; line-height: 1.35; white-space: pre-wrap; flex: 1; min-width: 0; }
 .msg-meta {
-  float: right;
+  margin-left: auto;
   color: #8696a0;
   font-size: 11px;
-  margin: 6px 0 -2px 8px;
+  flex-shrink: 0;
   display: inline-flex; align-items: center; gap: 3px;
   user-select: none;
+  padding-bottom: 1px;
 }
 .msg-img {
   display: block;
