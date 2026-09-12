@@ -58,6 +58,7 @@ export class LocalBackend {
   subscribeTyping(user, cb) {
     if (!this._typCbs.has(user)) this._typCbs.set(user, new Set());
     this._typCbs.get(user).add(cb);
+    cb(this._readTyping(user)); // immediate snapshot, like subscribeMessages
     return () => this._typCbs.get(user)?.delete(cb);
   }
 

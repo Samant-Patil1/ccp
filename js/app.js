@@ -35,6 +35,19 @@ function applyMuteIcon() {
   $('mute-btn').textContent = localStorage.getItem(MUTE_KEY) === '1' ? '🔕' : '🔔';
 }
 
+// Session is scoped per browser tab (sessionStorage holds a stable tab id;
+// localStorage holds the user for that tab). This lets demo mode run as two
+// different users in two tabs of the same browser — each tab restores its
+// own identity on reload.
+function sessionKey() {
+  let id = sessionStorage.getItem('ism.tab');
+  if (!id) {
+    id = globalThis.crypto?.randomUUID?.() ?? `tab-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    sessionStorage.setItem('ism.tab', id);
+  }
+  return `${SESSION_KEY}.${id}`;
+}
+
 async function startChat(user) {
   $('login-screen').classList.add('hidden');
   $('chat-screen').classList.remove('hidden');
@@ -83,7 +96,7 @@ async function startChat(user) {
 
   $('logout-btn').addEventListener('click', () => {
     backend.clearPresence();
-    localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(sessionKey());
     location.reload();
   });
   window.addEventListener('beforeunload', () => backend.clearPresence());
@@ -98,10 +111,10 @@ $('login-form').addEventListener('submit', (e) => {
     err.classList.remove('hidden');
     return;
   }
-  localStorage.setItem(SESSION_KEY, result.user);
+  localStorage.setItem(sessionKey(), result.user);
   startChat(result.user);
 });
 
 // Restore session on reload (session value is just the validated username).
-const saved = localStorage.getItem(SESSION_KEY);
+const saved = localStorage.getItem(sessionKey());
 if (saved === 'Ishu' || saved === 'Sammy') startChat(saved);
